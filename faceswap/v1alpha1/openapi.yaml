@@ -1,0 +1,250 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "v1alpha1"
+  title: "Babel Faceswap"
+  termsOfService: "http://babel.jp/terms/"
+  contact:
+    email: "support@babel.jp"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "faceswap.api.babel.jp"
+basePath: "/v1alpha1"
+schemes:
+- "https"
+paths:
+  /faces:
+    post:
+      description: "Register Face Image."
+      consumes:
+        - multipart/form-data
+      security:
+        - api_key: []
+      parameters:
+        - in: formData
+          name: data
+          type: file
+          required: true
+          description: ""
+      responses:
+        "201":
+          description: ""
+          schema:
+              type: "object"
+              properties:
+                face:
+                  $ref: "#/definitions/Face"
+          
+    get:
+      description: "List Face Image."
+      security:
+        - api_key: []
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              faces:
+                description: ""
+                type: "array"
+                items:
+                  $ref: "#/definitions/Face"
+  /faces/{id}:
+    delete:
+      security:
+        - api_key: []
+      parameters:
+        - in: path
+          name: id
+          type: "string"
+          required: true
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              face:
+                $ref: '#/definitions/Face'
+
+  /videos:
+    post:
+      description: "Register Base Video"
+      consumes:
+        - multipart/form-data
+      security:
+        - api_key: []
+      parameters:
+        - in: formData
+          name: data
+          type: file
+          required: true
+          description: ""
+      responses:
+        "201":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              face_id:
+                type: "string"
+                description: ""
+    get:
+      description: "List Video"
+      security:
+        - api_key: []
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              faces:
+                description: ""
+                type: "array"
+                items:
+                  $ref: '#/definitions/Video'
+  /videos/{id}:
+    get:
+      security:
+        - api_key: []
+      parameters:
+        - in: path
+          name: id
+          type: "string"
+          required: true
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              video:
+                $ref: '#/definitions/Video'
+    delete:
+      security:
+        - api_key: []
+      parameters:
+        - in: path
+          name: id
+          type: "string"
+          required: true
+      responses:
+        "200":
+          description: ""
+
+  /rendering:
+    post:
+      description: "Rendering Faceswap Video"
+      consumes:
+      - "application/json"
+      security:
+        - api_key: []
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/RenderingRequest"
+      responses:
+        "201":
+          description: ""
+          schema:
+            type: "object"
+            properties:
+              video:
+                $ref: '#/definitions/Video'
+securityDefinitions:
+  # petstore_auth:
+  #   type: "oauth2"
+  #   authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+  #   flow: "implicit"
+  #   scopes:
+  #     write:pets: "modify pets in your account"
+  #     read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+definitions:
+  Face:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: ""
+      created:
+        type: "string"
+        format: "date-time"
+        description: ""
+      thumbnail:
+        type: string
+        format: url
+  Video:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: ""
+      created:
+        type: "string"
+        format: "date-time"
+        description: ""
+      type:
+        type: "string"
+        enum: ["base", "render"]
+      status:
+        type: string
+        enum: ['init', 'process', 'active', 'error']
+      url:
+        type: string
+        format: url
+      error_message:
+        type: string
+      faces:
+        description: "Include face ids. if only type base."
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+            thumbnail:
+              type: string
+              format: url
+      face_map:
+        description: "Include face ids. if only type render."
+        type: "array"
+        items:
+          type: object
+          properties:
+            from: 
+              type: string
+              description: "Face id from base video."
+            to:
+              type: string
+              description: "Face id"
+  RenderingRequest:
+    type: "object"
+    properties:
+      base_video_id:
+        type: "string"
+      face_map:
+        type: "array"
+        items:
+          type: object
+          properties:
+            from: 
+              type: string
+              description: "Face id from base video."
+            to:
+              type: string
+              description: "Face id"
+      
+      
+externalDocs:
+  description: ""
+  url: "http://babel.jp"
