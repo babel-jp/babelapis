@@ -165,8 +165,8 @@ securityDefinitions:
   #     read:pets: "read your pets"
   api_key:
     type: "apiKey"
-    name: "x-api-key"
-    in: "header"
+    name: "key"
+    in: "query"
 definitions:
   Face:
     type: "object"
