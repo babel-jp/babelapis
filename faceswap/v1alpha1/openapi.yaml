@@ -9,34 +9,33 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "faceswap.api.babel.jp"
+host: "faceswap-n3wgtewq5a-uw.a.run.app"
 basePath: "/v1alpha1"
 schemes:
 - "https"
+x-google-backend:
+  address: https://faceswap-n3wgtewq5a-uw.a.run.app
+  protocol: h2
 paths:
   /faces:
     post:
+      operationId: addFace
       description: "Register Face Image."
       consumes:
-        - multipart/form-data
+      - "application/json"
       security:
         - api_key: []
-      parameters:
-        - in: formData
-          name: data
-          type: file
-          required: true
-          description: ""
       responses:
         "201":
           description: ""
           schema:
               type: "object"
               properties:
-                face:
-                  $ref: "#/definitions/Face"
+                signedUrl:
+                  type: string
           
     get:
+      operationId: listFace
       description: "List Face Image."
       security:
         - api_key: []
@@ -53,6 +52,7 @@ paths:
                   $ref: "#/definitions/Face"
   /faces/{id}:
     delete:
+      operationId: deleteFace
       security:
         - api_key: []
       parameters:
@@ -71,27 +71,22 @@ paths:
 
   /videos:
     post:
+      operationId: addVideo
       description: "Register Base Video"
       consumes:
-        - multipart/form-data
+      - "application/json"
       security:
         - api_key: []
-      parameters:
-        - in: formData
-          name: data
-          type: file
-          required: true
-          description: ""
       responses:
         "201":
           description: ""
           schema:
-            type: "object"
-            properties:
-              video_id:
-                type: "string"
-                description: ""
+              type: "object"
+              properties:
+                signedUrl:
+                  type: string
     get:
+      operationId: listVideo
       description: "List Video"
       security:
         - api_key: []
@@ -108,6 +103,7 @@ paths:
                   $ref: '#/definitions/Video'
   /videos/{id}:
     get:
+      operationId: getVideo
       security:
         - api_key: []
       parameters:
@@ -124,6 +120,7 @@ paths:
               video:
                 $ref: '#/definitions/Video'
     delete:
+      operationId: deleteVideo
       security:
         - api_key: []
       parameters:
@@ -137,6 +134,7 @@ paths:
 
   /rendering:
     post:
+      operationId: rendering
       description: "Rendering Faceswap Video"
       consumes:
       - "application/json"
