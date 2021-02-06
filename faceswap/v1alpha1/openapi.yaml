@@ -9,12 +9,12 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "faceswap-n3wgtewq5a-uw.a.run.app"
+host: "faceswap-m6a4gctyva-uw.a.run.app"
 basePath: "/v1alpha1"
 schemes:
 - "https"
 x-google-backend:
-  address: https://faceswap-n3wgtewq5a-uw.a.run.app
+  address: https://faceswap-api-n3wgtewq5a-uw.a.run.app
   protocol: h2
 paths:
   /faces:
@@ -206,13 +206,7 @@ definitions:
         description: "Include face ids. if only type base."
         type: array
         items:
-          type: object
-          properties:
-            id:
-              type: string
-            thumbnail:
-              type: string
-              format: url
+          $ref: '#/definitions/Face'
       face_map:
         description: "Include face ids. if only type render."
         type: "array"
