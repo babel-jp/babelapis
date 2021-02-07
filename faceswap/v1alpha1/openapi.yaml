@@ -31,6 +31,8 @@ paths:
           schema:
               type: "object"
               properties:
+                id:
+                  type: string
                 signedUrl:
                   type: string
           
@@ -63,11 +65,6 @@ paths:
       responses:
         "200":
           description: ""
-          schema:
-            type: "object"
-            properties:
-              face:
-                $ref: '#/definitions/Face'
 
   /videos:
     post:
@@ -83,6 +80,8 @@ paths:
           schema:
               type: "object"
               properties:
+                id:
+                  type: string
                 signedUrl:
                   type: string
     get:
@@ -178,9 +177,9 @@ definitions:
         type: "string"
         format: "date-time"
         description: ""
-      thumbnail:
-        type: string
-        format: url
+      # thumbnail:
+      #   type: string
+      #   format: url
   Video:
     type: "object"
     properties:
